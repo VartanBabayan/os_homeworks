@@ -1,22 +1,25 @@
 #include "ParallelSheduler.h"
 
+int counter = 1;
+
 void hello(void* arg)
 {
-	int* argument = (int*)arg; 
-
-	std::cout << "hello: " << *argument << " call\n";
+	std::cout << "hello " << counter << " call\n";
+	++counter;
 }
 
 int main()
 {
-	ParallelSheduler* sheduler = new ParallelSheduler(5);
+	ParallelSheduler* sheduler = new ParallelSheduler(10);
 	
-	for(int i = 1; i <= 10; ++i)
+	for(int i = 1; i <= 20; ++i)
 	{
-		sheduler->run(hello, &i);
-	}
-
-	sheduler->~ParallelSheduler();
+		sheduler->run(hello, NULL);
+	}	
+	
+	sheduler->terminateThreads(); // infinity loop
+	
 	delete sheduler;
-	std::cout << "end of main\n";
+	std::cout << "end of main\n";		
+	return 0;
 }
